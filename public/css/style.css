@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    text-align: center;
+    padding: 20px;
+}
+
+/* สไตล์ปุ่ม */
+button {
+    background: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover {
+    background: #0056b3;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 200px;
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    position: absolute;
+    left: -250px; /* ซ่อนอยู่ */
+    top: 70px;
+    transition: left 0.3s;
+}
+.sidebar.active {
+    left: 20px; /* แสดงออกมา */
+}

@@ -63,7 +63,8 @@
             transition: box-shadow 0.2s, transform 0.2s;
         }
         .side-btn img:hover {
-            box-shadow: 0 6px 20px rgba(25,118,210,0.5);
+            box-shadow: 0 6px 20px rgb+
+            a(25,118,210,0.5);
             transform: scale(1.05);
         }
     </style>
@@ -80,7 +81,8 @@
             <span style="display:inline-block; width:100%; text-align:center;">ภาคเรียนที่ 1 ปีการศึกษา 2568</span>
         </h1>
         <div class="btn-group">
-            <button class="main-btn" onclick="location.href='testhome.php'">ระบบผลการเข้าเรียน</button>
+            <button class="main-btn" onclick="location.href='public/index.php'">ระบบผลการเข้าเรียนสำหรับอาจารย์</button>
+            <button class="main-btn" onclick="location.href='testhome.php'">ระบบผลการเข้าเรียนสำหรับนักศึกษา</button>
             <button class="main-btn" onclick="location.href='schedule.php'">ตารางเรียน</button>
             <button class="main-btn" onclick="location.href='indicator.php'">ตัวชี้วัดรายวิชา</button>
             <button class="main-btn" onclick="location.href='contact.php'">ติดต่อ</button>

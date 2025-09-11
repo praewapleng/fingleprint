@@ -14,6 +14,12 @@
                 '4': ['รหัสแพทย์', 'ภาษาอังกฤษ', 'คอมพิวเตอร์', 'เศรษฐศาสตร์']
             };
 
+            // เพิ่ม option แรก
+            var defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.text = '-- เลือกวิชา --';
+            subjectSelect.appendChild(defaultOption);
+
             if (subjects[year]) {
                 subjects[year].forEach(function(subj) {
                     var option = document.createElement('option');
@@ -24,6 +30,11 @@
             }
         }
     </script>
+    <style>
+        .show-type-group {
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
     <form id="courseForm">
