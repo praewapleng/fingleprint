@@ -112,6 +112,7 @@
             <button type="submit"><i class="fa-solid fa-right-to-bracket"></i> LOGIN </button>
         </form>
     </div>
-
+        </a>
+    </div>
 </body>
 </html>

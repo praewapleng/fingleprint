@@ -65,7 +65,8 @@ while ($row = sqlsrv_fetch_array($result_students, SQLSRV_FETCH_ASSOC)) {
         'late' => []
     ];
 }
-// ดึงวันที่ที่มีรายวิชาใน subject01 ที่ codesub = '0208304427'
+
+// ดึงวันที่เรียน
 $wantedDays = [];
 $specificDates = [];
 
@@ -141,19 +142,108 @@ while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
 $allDates = array_keys($dates);
 sort($allDates);
 
-// สร้างตาราง
-echo '<table border="1" cellpadding="5" cellspacing="0">';
-echo '<tr><th>รหัสนักศึกษา</th><th>ชื่อ-นามสกุล</th>';
-foreach ($allDates as $d) echo '<th>' . formatThaiDate($d) . '</th>';
-echo '<th>จำนวนครั้งที่มาเรียน</th><th>เปอร์เซ็นต์การเข้าเรียน</th></tr>';
+// ====== คำนวณสรุปสำหรับ Dashboard ======
+$totalStudents = count($students);
+$eligible = 0;
+$notEligible = 0;
+$totalLate = 0;
 
 $totalSessions = count($allDates);
 
 foreach ($students as $enroll => $data) {
     $attended = count(array_unique(array_merge(array_keys($data['dates']), array_keys($data['late']))));
+    $absent = $totalSessions - $attended;
+    $percent = $totalSessions>0 ? ($attended/$totalSessions)*100 : 0;
+
+    // ✅ เงื่อนไขใหม่
+    if ($percent >= 80 || ($percent < 80 && $absent < 3)) {
+        $eligible++;
+    } elseif ($percent < 80 && $absent >= 3) {
+        $notEligible++;
+    }
+
+    $totalLate += count($data['late']);
+}
+?>
+
+<div class="dashboard">
+    <h2>สรุปผลการเข้าเรียน (Dashboard)</h2>
+    <div class="cards">
+        <div class="card blue">
+            <h3>นักศึกษาทั้งหมด</h3>
+            <p><?php echo $totalStudents; ?> คน</p>
+        </div>
+        <div class="card green">
+            <h3>ผู้มีสิทธิ์สอบ</h3>
+            <p><?php echo $eligible; ?> คน</p>
+        </div>
+        <div class="card red">
+            <h3>ไม่มีสิทธิ์สอบ</h3>
+            <p><?php echo $notEligible; ?> คน</p>
+        </div>
+        <div class="card orange">
+            <h3>จำนวนมาสายรวม</h3>
+            <p><?php echo $totalLate; ?> ครั้ง</p>
+        </div>
+    </div>
+
+    <!-- กราฟวงกลม -->
+    <div style="max-width:400px; margin:30px auto;">
+        <canvas id="examChart"></canvas>
+    </div>
+</div>
+
+<!-- เรียกใช้ Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('examChart').getContext('2d');
+new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ['มีสิทธิ์สอบ', 'ไม่มีสิทธิ์สอบ'],
+        datasets: [{
+            data: [<?php echo $eligible; ?>, <?php echo $notEligible; ?>],
+            backgroundColor: ['#4caf50', '#f44336'],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'bottom' },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        let total = context.dataset.data.reduce((a,b)=>a+b,0);
+                        let value = context.parsed;
+                        let percentage = ((value/total)*100).toFixed(1);
+                        return context.label + ': ' + value + ' คน ('+percentage+'%)';
+                    }
+                }
+            }
+        }
+    }
+});
+</script>
+
+<?php
+// ====== ตารางเดิม ======
+echo '<table border="1" cellpadding="5" cellspacing="0">';
+echo '<tr><th>รหัสนักศึกษา</th><th>ชื่อ-นามสกุล</th>';
+foreach ($allDates as $d) echo '<th>' . formatThaiDate($d) . '</th>';
+echo '<th>จำนวนครั้งที่มาเรียน</th><th>เปอร์เซ็นต์การเข้าเรียน</th></tr>';
+
+foreach ($students as $enroll => $data) {
+    $attended = count(array_unique(array_merge(array_keys($data['dates']), array_keys($data['late']))));
+    $absent = $totalSessions - $attended;
     $percent = $totalSessions>0 ? number_format(($attended/$totalSessions)*100,1) : 0;
 
-    $bgcolor = ($percent > 80) ? "#c6efce" : "#ffcccc";
+    // ✅ เงื่อนไขใหม่
+    if ($percent >= 80 || ($percent < 80 && $absent < 3)) {
+        $bgcolor = "#c6efce"; // เขียว = มีสิทธิ์สอบ
+    } elseif ($percent < 80 && $absent >= 3) {
+        $bgcolor = "#ffcccc"; // แดง = ไม่มีสิทธิ์สอบ
+    }
 
     echo '<tr>';
     echo '<td>'.$enroll.'</td>';
@@ -163,14 +253,14 @@ foreach ($students as $enroll => $data) {
         if(isset($data['dates'][$d])){
             echo '<td align="center" style="background-color:#c6efce;">✓</td>';
         } elseif(isset($data['late'][$d])) {
-            echo '<td align="center" style="background-color:#ffcccc;">สาย</td>';
+            echo '<td align="center" style="background-color:#ffeb99;">สาย</td>';
         } else {
             echo '<td align="center" style="background-color:#ffc7ce;">-</td>';
         }
     }
 
     echo '<td align="center">'.$attended.'/'.$totalSessions.'</td>';
-    echo '<td align="center" style="background-color:'.$bgcolor.';">'.$percent.'%</td>';
+    echo '<td align="center" style="background-color:'.$bgcolor.';">'.$percent.'% (ขาด '.$absent.' ครั้ง)</td>';
     echo '</tr>';
 }
 
@@ -181,6 +271,7 @@ echo ' <a href="testhome.php"><button>กลับไปยังหน้าท
 
 sqlsrv_close($conn);
 ?>
+
 <script>
 document.querySelector('select[name="mode"]').addEventListener('change', function() {
     const studentSelect = document.querySelector('select[name="student_code"]');
@@ -190,3 +281,97 @@ document.querySelector('select[name="mode"]').addEventListener('change', functio
     }
 });
 </script>
+
+<style>
+body {
+    font-family: 'TH Sarabun New', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #e3f0ff 0%, #f8fbff 100%);
+    margin: 0;
+    padding: 0;
+}
+form {
+    background: #f4faff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,50,0.04);
+    padding: 20px 30px;
+    display: inline-block;
+}
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,50,0.07);
+    margin-bottom: 30px;
+}
+th, td {
+    padding: 10px 8px;
+    text-align: center;
+}
+th {
+    background: linear-gradient(90deg, #4f8edc 0%, #6cb6f7 100%);
+    color: #fff;
+    font-weight: 600;
+    border-bottom: 2px solid #1976d2;
+}
+tr:nth-child(even) td { background: #f0f7ff; }
+tr:hover td { background: #e3f0ff; }
+td { border-bottom: 1px solid #e0eafc; }
+button {
+    background: linear-gradient(90deg, #1976d2 0%, #4f8edc 100%);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 7px 18px;
+    font-size: 1em;
+    cursor: pointer;
+    margin: 5px 0;
+    transition: background 0.2s;
+}
+button:hover {
+    background: linear-gradient(90deg, #1565c0 0%, #1976d2 100%);
+}
+select, input[type="text"] {
+    border: 1px solid #b3d1f7;
+    border-radius: 5px;
+    background: #f4faff;
+    color: #1976d2;
+    font-size: 1em;
+    padding: 5px 10px;
+    outline: none;
+}
+.dashboard {
+    margin: 30px auto;
+    padding: 20px;
+    background: #f4faff;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+}
+.dashboard h2 {
+    color: #1976d2;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    gap: 20px;
+}
+.card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    transition: transform 0.2s;
+}
+.card:hover { transform: translateY(-4px); }
+.card h3 { font-size: 1.2em; margin-bottom: 10px; }
+.card p { font-size: 1.5em; font-weight: bold; }
+.card.blue { border-top: 4px solid #42a5f5; }
+.card.green { border-top: 4px solid #4caf50; }
+.card.red { border-top: 4px solid #f44336; }
+.card.orange { border-top: 4px solid #ff9800; }
+</style>

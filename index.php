@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>หน้าหลัก</title>
-    <!-- ✅ เพิ่ม Google Font -->
+    <!-- ✅ Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
     <style>
         body {
@@ -11,27 +11,29 @@
             padding: 0;
             background: url('student-bg.jpg') no-repeat center center fixed;
             background-size: cover;
-            font-family: 'Itim', cursive; /* ✅ เปลี่ยนฟอนต์ */
+            font-family: 'Itim', cursive;
         }
         .overlay {
             background: rgba(255,255,255,0.8);
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            min-height: 100vh; 
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
+            padding-bottom: 60px; 
         }
         h1 {
-            margin-bottom: 40px;
+            margin: 60px 0 40px;
             color: #333;
             font-size: 2.2em;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
         }
         .btn-group {
             display: flex;
             flex-direction: column;
             gap: 20px;
+            margin-bottom: 60px;
         }
         .main-btn {
             padding: 15px 40px;
@@ -42,18 +44,18 @@
             color: #fff;
             cursor: pointer;
             transition: background 0.2s, transform 0.2s;
-            font-family: 'Itim', cursive; /* ✅ ปรับปุ่มให้ใช้ฟอนต์น่ารัก */
+            font-family: 'Itim', cursive;
         }
         .main-btn:hover {
             background: #1565c0;
             transform: scale(1.05);
         }
+        /* ✅ ปุ่มฟอร์มอยู่นิ่งๆ แบบเรียงข้างกัน */
         .side-btn-container {
-            position: absolute;
-            top: 50%;
-            left: 350px;
-            transform: translateY(-50%);
-            z-index: 10;
+            margin-top: auto; /* ดันไปอยู่ล่างสุด */
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* เว้นระยะระหว่างปุ่ม */
         }
         .side-btn img {
             width: 210px;
@@ -63,18 +65,12 @@
             transition: box-shadow 0.2s, transform 0.2s;
         }
         .side-btn img:hover {
-            box-shadow: 0 6px 20px rgb+
-            a(25,118,210,0.5);
+            box-shadow: 0 6px 20px rgba(25,118,210,0.5);
             transform: scale(1.05);
         }
     </style>
 </head>
 <body>
-    <div class="side-btn-container">
-        <a href="https://forms.gle/knn6K4ferAsRxQ377" target="_blank" class="side-btn">
-            <img src="assessment.jpg" alt="Assessment" style="margin-top:40px; width:210px; height:200px; border-radius:20px; box-shadow:0 4px 12px rgba(0,0,0,0.3);">
-        </a>
-    </div>
     <div class="overlay">
         <h1>
             ระบบบันทึกข้อมูลการเข้าเรียนด้วยเครื่องอ่านลายนิ้วมือ <br>
@@ -86,6 +82,16 @@
             <button class="main-btn" onclick="location.href='schedule.php'">ตารางเรียน</button>
             <button class="main-btn" onclick="location.href='indicator.php'">ตัวชี้วัดรายวิชา</button>
             <button class="main-btn" onclick="location.href='contact.php'">ติดต่อ</button>
+        </div>
+
+        <!-- ✅ ปุ่มฟอร์ม 2 ปุ่มอยู่ข้างกัน -->
+        <div class="side-btn-container">
+            <a href="https://forms.gle/c27Nofdc1QeMpeK99" target="_blank" class="side-btn">
+                <img src="quality.jpg" alt="Quality Assessment">
+            </a>
+            <a href="https://forms.gle/DmHmN4aTXKZndre86" target="_blank" class="side-btn">
+                <img src="satisfied.jpg" alt="Satisfied Assessment">
+            </a>
         </div>
     </div>
 </body>

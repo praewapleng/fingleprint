@@ -11,16 +11,20 @@ if (isset($_GET['delete'])) {
     exit();
 }
 
-// ✅ เพิ่มรายวิชา
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create'])) {
-    $namesub = $_POST['namesub'];
-    $starttime = $_POST['starttime'];
-    $endtime = $_POST['endtime'];
-    $codesub = $_POST['codesub'];
+    $namesub   = $_POST['namesub'];
+    $starttime = date("Y-m-d H:i:s", strtotime($_POST['starttime']));
+    $endtime   = date("Y-m-d H:i:s", strtotime($_POST['endtime']));
+    $codesub   = $_POST['codesub'];
 
     $sql = "INSERT INTO subject01 (namesub, starttime, endtime, codesub) VALUES (?, ?, ?, ?)";
     $params = array($namesub, $starttime, $endtime, $codesub);
-    sqlsrv_query($conn, $sql, $params);
+    $stmt = sqlsrv_query($conn, $sql, $params);
+
+    if ($stmt === false) {
+        die(print_r(sqlsrv_errors(), true)); // ดู error
+    }
+
     header("Location: manage-subjects.php");
     exit();
 }
