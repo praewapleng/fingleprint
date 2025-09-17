@@ -161,6 +161,11 @@ $result = sqlsrv_query($conn, "SELECT * FROM subject01 ORDER BY starttime ASC");
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- ปุ่มกลับหน้าหลัก -->
+<div class="container mt-3">
+  <a href="choose.php" class="btn btn-outline-primary ms-2">กลับไปยังหน้าที่แล้ว</a>
+  <a href="../index.php" class="btn btn-secondary">กลับหน้าหลัก</a>
+</div>
 </body>
 </html>
 <?php
