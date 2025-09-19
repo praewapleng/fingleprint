@@ -213,8 +213,8 @@
         subjectSelect.innerHTML = '';
 
         const subjects = {
-            '3': ['คอมพิวเตอร์', 'คณิตศาสตร์'],
-            '4': ['รหัสแพทย์', 'ภาษาอังกฤษ', 'คอมพิวเตอร์', 'เศรษฐศาสตร์']
+            '3': ['ระเบียบวิธีวิจัย'],
+            '4': ['ระบบเครือข่ายคอมพิวเตอร์เพื่อการสื่อสารข้อมูล']
         };
 
         const defaultOption = document.createElement('option');
@@ -239,7 +239,7 @@
             const year = document.getElementById('year').value;
             const subject = document.getElementById('subject').value;
 
-            if (course === 'bscmrs' && year === '4' && subject === 'คอมพิวเตอร์') {
+            if (course === 'bscmrs' && year === '4' && subject === 'ระบบเครือข่ายคอมพิวเตอร์เพื่อการสื่อสารข้อมูล') {
                 window.location.href = 'testnew.php';
             } else {
                 alert('กรุณาเลือกหลักสูตร ปี และวิชาให้ถูกต้อง');
