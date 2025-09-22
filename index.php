@@ -50,24 +50,35 @@
             background: #1565c0;
             transform: scale(1.05);
         }
-        /* ✅ ปุ่มฟอร์มอยู่นิ่งๆ แบบเรียงข้างกัน */
-        .side-btn-container {
-            margin-top: auto; /* ดันไปอยู่ล่างสุด */
-            display: flex;
-            justify-content: center;
-            gap: 20px; /* เว้นระยะระหว่างปุ่ม */
-        }
-        .side-btn img {
-            width: 210px;
-            height: 200px;
-            border-radius: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            transition: box-shadow 0.2s, transform 0.2s;
-        }
-        .side-btn img:hover {
-            box-shadow: 0 6px 20px rgba(25,118,210,0.5);
-            transform: scale(1.05);
-        }
+        /* ✅ ปุ่มฟอร์มอยู่ใต้ปุ่ม ติดต่อ */
+.side-btn-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap; /* ช่วยให้เลื่อนลงได้เมื่อพื้นที่ไม่พอ */
+}
+
+.side-btn img {
+    width: 210px;
+    height: 200px;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.side-btn img:hover {
+    box-shadow: 0 6px 20px rgba(25,118,210,0.5);
+    transform: scale(1.05);
+}
+
+/* ✅ บนมือถือ (จอแคบกว่า 600px) ให้ปุ่มฟอร์มเรียงเป็นแนวตั้ง */
+@media (max-width: 600px) {
+    .side-btn-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}
     </style>
 </head>
 <body>
@@ -84,15 +95,15 @@
             <button class="main-btn" onclick="location.href='contact.php'">ติดต่อ</button>
         </div>
 
-        <!-- ✅ ปุ่มฟอร์ม 2 ปุ่มอยู่ข้างกัน -->
-        <div class="side-btn-container">
-            <a href="https://forms.gle/c27Nofdc1QeMpeK99" target="_blank" class="side-btn">
-                <img src="quality.jpg" alt="Quality Assessment">
-            </a>
-            <a href="https://forms.gle/DmHmN4aTXKZndre86" target="_blank" class="side-btn">
-                <img src="satisfied.jpg" alt="Satisfied Assessment">
-            </a>
-        </div>
+        <!-- ✅ ปุ่มฟอร์ม 2 ปุ่มอยู่ใต้ปุ่มติดต่อ -->
+<div class="side-btn-container">
+    <a href="https://forms.gle/c27Nofdc1QeMpeK99" target="_blank" class="side-btn">
+        <img src="quality.jpg" alt="Quality Assessment">
+    </a>
+    <a href="https://forms.gle/DmHmN4aTXKZndre86" target="_blank" class="side-btn">
+        <img src="satisfied.jpg" alt="Satisfied Assessment">
+    </a>
+</div>
     </div>
 </body>
 </html>

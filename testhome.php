@@ -214,7 +214,7 @@
 
         const subjects = {
             '3': ['ระเบียบวิธีวิจัย'],
-            '4': ['ระบบเครือข่ายคอมพิวเตอร์เพื่อการสื่อสารข้อมูล']
+            '4': ['ระบบเครือข่ายคอมพิวเตอร์เพื่อการสื่อสารข้อมูล','เศรษฐศาสตร์สาธารณสุขและการประกันสุขภาพ']
         };
 
         const defaultOption = document.createElement('option');
@@ -241,6 +241,10 @@
 
             if (course === 'bscmrs' && year === '4' && subject === 'ระบบเครือข่ายคอมพิวเตอร์เพื่อการสื่อสารข้อมูล') {
                 window.location.href = 'testnew.php';
+            } else if (course === 'bscmrs' && year === '3' && subject === 'ระเบียบวิธีวิจัย') {
+                window.location.href = 'testoldresearch.php';
+            } else if (course === 'bscmrs' && year === '4' && subject === 'เศรษฐศาสตร์สาธารณสุขและการประกันสุขภาพ') {
+                window.location.href = 'testnewmoney.php';
             } else {
                 alert('กรุณาเลือกหลักสูตร ปี และวิชาให้ถูกต้อง');
             }
