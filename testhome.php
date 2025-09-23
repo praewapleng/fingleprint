@@ -213,8 +213,8 @@
         subjectSelect.innerHTML = '';
 
         const subjects = {
-            '3': ['ระเบียบวิธีวิจัย'],
-            '4': ['ระบบเครือข่ายคอมพิวเตอร์เพื่อการสื่อสารข้อมูล','เศรษฐศาสตร์สาธารณสุขและการประกันสุขภาพ']
+            '3': ['ระเบียบวิธีวิจัย','โปรแกรมคอมพิวเตอร์สำหรับงานเวชระเบียน','การปฐมพยาบาลเบื้องต้น'],
+            '4': ['ระบบเครือข่ายคอมพิวเตอร์เพื่อการสื่อสารข้อมูล','เศรษฐศาสตร์สาธารณสุขและการประกันสุขภาพ','การตรวจสอบรหัสทางการแพทย์']
         };
 
         const defaultOption = document.createElement('option');
@@ -245,6 +245,12 @@
                 window.location.href = 'testoldresearch.php';
             } else if (course === 'bscmrs' && year === '4' && subject === 'เศรษฐศาสตร์สาธารณสุขและการประกันสุขภาพ') {
                 window.location.href = 'testnewmoney.php';
+            } else if (course === 'bscmrs' && year === '3' && subject === 'โปรแกรมคอมพิวเตอร์สำหรับงานเวชระเบียน') {
+                window.location.href = 'testoldcom.php';
+            } else if (course === 'bscmrs' && year === '3' && subject === 'การปฐมพยาบาลเบื้องต้น') {
+                window.location.href = 'testoldnurse.php';
+            } else if (course === 'bscmrs' && year === '4' && subject === 'การตรวจสอบรหัสทางการแพทย์') {
+                window.location.href = 'testnewcode.php';
             } else {
                 alert('กรุณาเลือกหลักสูตร ปี และวิชาให้ถูกต้อง');
             }

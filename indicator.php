@@ -160,6 +160,12 @@ function goToFile() {
         subject === "ระเบียบวิธีวิจัย"
     ) {
         window.open("indi03rese.pdf", "_blank");
+    } else if (
+        course === "bsc_medrec" &&
+        year === "3" &&
+        subject === "กฎหมายและจรรยาบรรณวิชาชีพ"
+    ) {
+        window.open("indi03rule.pdf", "_blank");
     } else {
         alert("ยังไม่มีไฟล์ PDF สำหรับตัวเลือกนี้");
     }
